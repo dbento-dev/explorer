@@ -4,7 +4,7 @@ import { Container, Profile, Logout } from './styles'
 export function Header() {
   return (
     <Container>
-      <Profile>
+      <Profile to="/profile">
         <img src="http://github.com/dbento-dev.png" alt="user photo" />
         <div>
           <span>Bem vindo,</span>

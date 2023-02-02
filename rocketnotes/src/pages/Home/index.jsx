@@ -5,7 +5,6 @@ import { Header } from '../../components/Header'
 import { ButtonText } from '../../components/ButtonText'
 import { Input } from '../../components/Input'
 import { Section } from '../../components/Section'
-import { Tag } from '../../components/Tag'
 import { Note } from '../../components/Note'
 
 export function Home() {
@@ -56,7 +55,7 @@ export function Home() {
           </Section>
         </Content>
 
-        <NewNote>
+        <NewNote to="/new">
           <FiPlus /> Criar nota
         </NewNote>
       </Container>
