@@ -9,6 +9,9 @@ import { Input } from '../../components/Input'
 import { Button } from '../../components/Button'
 
 import { useAuth } from '../../hooks/auth'
+import { api } from '../../services/api'
+
+import avatarPlaceholder from '../../assets/avatar_placeholder.svg'
 
 export function Profile() {
   const { user, updateProfile } = useAuth()
@@ -17,6 +20,12 @@ export function Profile() {
   const [email, setEmail] = useState(user.email)
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
+
+  const avatarUrl = user.avatar
+    ? `${api.defaults.baseURL}/files/${user.avatar}`
+    : avatarPlaceholder
+  const [avatar, setAvatar] = useState(avatarUrl)
+  const [avatarFile, setAvatarFile] = useState(null)
 
   // const [disabledButton, setDisabledButton] = useState(true)
 
@@ -28,8 +37,16 @@ export function Profile() {
       password: newPassword
     }
     // if (!disabledButton) {
-    await updateProfile({ user })
+    await updateProfile({ user, avatarFile })
     // }
+  }
+
+  function handleChangeAvatar(e) {
+    const file = e.target.files[0]
+    setAvatarFile(file)
+
+    const imagePreview = URL.createObjectURL(file)
+    setAvatar(imagePreview)
   }
 
   // TODO: criar validação dos campos e desabilitar botão salvar
@@ -50,11 +67,11 @@ export function Profile() {
 
       <Form>
         <Avatar>
-          <img src="http://github.com/dbento-dev.png" alt="user photo" />
+          <img src={avatar} alt="user photo" />
 
           <label htmlFor="avatar">
             <FiCamera />
-            <input id="avatar" type="file" />
+            <input id="avatar" type="file" onChange={handleChangeAvatar} />
           </label>
         </Avatar>
 
