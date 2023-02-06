@@ -10,12 +10,15 @@ import { Section } from '../../components/Section'
 import { Note } from '../../components/Note'
 import { api } from '../../services/api'
 
+import { useNavigate } from 'react-router-dom'
+
 export function Home() {
   const [tags, setTags] = useState([])
   const [selectedTags, setSelectedTags] = useState([])
   const [search, setSearch] = useState('')
   const [notes, setNotes] = useState([])
 
+  const navigate = useNavigate()
   function handleSelectedTag(tagName) {
     if (tagName === 'all') {
       setSelectedTags([])
@@ -31,6 +34,10 @@ export function Home() {
     } else {
       setSelectedTags((prevState) => [...prevState, tagName])
     }
+  }
+
+  function handleDetails(noteId) {
+    navigate(`/details/${noteId}`)
   }
 
   useEffect(() => {
@@ -94,7 +101,15 @@ export function Home() {
         <Content>
           <Section title="Minhas notas">
             {notes &&
-              notes.map((note) => <Note key={String(note.id)} data={note} />)}
+              notes.map((note) => (
+                <Note
+                  key={String(note.id)}
+                  data={note}
+                  onClick={() => {
+                    handleDetails(note.id)
+                  }}
+                />
+              ))}
           </Section>
         </Content>
 
