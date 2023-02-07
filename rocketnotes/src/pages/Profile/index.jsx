@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import { FiArrowLeft, FiUser, FiMail, FiLock, FiCamera } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import { Container, Form, Avatar } from './styles'
 
@@ -27,7 +27,11 @@ export function Profile() {
   const [avatar, setAvatar] = useState(avatarUrl)
   const [avatarFile, setAvatarFile] = useState(null)
 
-  // const [disabledButton, setDisabledButton] = useState(true)
+  const navigate = useNavigate()
+
+  function handleBack() {
+    navigate(-1)
+  }
 
   async function handleUpdate() {
     const user = {
@@ -36,9 +40,8 @@ export function Profile() {
       old_password: currentPassword,
       password: newPassword
     }
-    // if (!disabledButton) {
+
     await updateProfile({ user, avatarFile })
-    // }
   }
 
   function handleChangeAvatar(e) {
@@ -50,19 +53,13 @@ export function Profile() {
   }
 
   // TODO: criar validação dos campos e desabilitar botão salvar
-  // useEffect(() => {
-  //   if (name && email && oldPassword && newPassword) {
-  //     setDisabledButton(false)
-  //   }
-  //   setDisabledButton(true)
-  // }, [name, email, oldPassword, newPassword])
 
   return (
     <Container>
       <header>
-        <Link to="/">
+        <button type="button" onClick={handleBack} to="/">
           <FiArrowLeft />
-        </Link>
+        </button>
       </header>
 
       <Form>
@@ -102,11 +99,7 @@ export function Profile() {
           onChange={(e) => setNewPassword(e.target.value)}
         />
 
-        <Button
-          title="Salvar"
-          onClick={handleUpdate}
-          // disabled={disabledButton}
-        />
+        <Button title="Salvar" onClick={handleUpdate} />
       </Form>
     </Container>
   )
